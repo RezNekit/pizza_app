@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+  {% if pizzas %}
+  <table class="table table-striped align-middle">
+    <thead><tr>
+      <th>ID</th><th>Name</th><th>Tags</th><th class="price">€ ex VAT</th><th class="price">€ inc VAT</th>
+    </tr></thead>
+    <tbody>
+    {% for p in pizzas %}
+      <tr>
+        <td>{{ p.pizza_id }}</td>
+        <td>{{ p.name }}</td>
+        <td>
+          {% if p.is_vegan %}
+            <img src="{{ url_for('static', filename='icons/Vegan_friendly_icon.svg') }}" class="diet-icon" alt="Vegan" title="Vegan">
+            <img src="{{ url_for('static', filename='icons/Vegan_friendly_icon.svg') }}" class="diet-icon" alt="Vegan" aria-hidden="true">
+            <span class="visually-hidden">Vegan</span>
+          {% elif p.is_vegetarian %}
+            <img src="{{ url_for('static', filename='icons/Vegan_friendly_icon.svg') }}" class="diet-icon" alt="Vegetarian" title="Vegetarian">
+            <span class="visually-hidden">Vegetarian</span>
+          {% endif %}
+
+          {% if p.is_spicy %}
+            <img src="{{ url_for('static', filename='icons/spicy.png') }}" class="diet-icon" alt="Spicy" title="Spicy">
+            <span class="visually-hidden">Spicy</span>
+          {% endif %}
+        </td>
+        <td class="price">{{ '%.2f'|format(p.price_ex_vat) }}</td>
+        <td class="price">{{ '%.2f'|format(p.price_inc_vat) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>No pizzas yet.</p>
+  {% endif %}
+{% endblock %}

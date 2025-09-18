@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+  {% if drinks %}
+  <table class="table table-striped align-middle">
+    <thead><tr>
+      <th>ID</th><th>Name</th><th>Size (ml)</th>
+      <th class="price">€ ex VAT</th><th class="price">€ inc VAT</th>
+    </tr></thead>
+    <tbody>
+      {% for d in drinks %}
+      <tr>
+        <td>{{ d.drink_id }}</td>
+        <td>{{ d.name }}</td>
+        <td>{{ d.size_ml }}</td>
+        <td class="price">{{ '%.2f'|format(d.price_ex_vat) }}</td>
+        <td class="price">{{ '%.2f'|format(d.price_inc_vat) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}<p>No drinks yet.</p>{% endif %}
+{% endblock %}

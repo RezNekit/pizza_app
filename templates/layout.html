@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ title or "Pizza App" }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+      body { padding: 2rem; }
+      table { width: 100%; }
+      th, td { padding: .4rem .6rem; }
+      thead th { border-bottom: 2px solid #ddd; }
+      .price { text-align: right; }
+      .badge { font-size: .75rem; }
+      .diet-icon { height: 18px; width: 18px; vertical-align: -2px; margin-right: 4px; }
+    </style>
+  </head>
+  <body>
+    <nav class="mb-3">
+      <a class="btn btn-outline-dark" href="{{ url_for('index') }}">Home</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('menu.list_pizzas') }}">Pizzas</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('menu.list_drinks') }}">Drinks</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('menu.list_desserts') }}">Desserts</a>
+      <a class="btn btn-outline-secondary" href="{{ url_for('customers.list_customers') }}">Customers</a>
+      <a class="btn btn-outline-success" href="{{ url_for('orders.list_orders') }}">Orders</a>
+      <a class="btn btn-success" href="{{ url_for('orders.new_order') }}">New Order</a>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="container mb-3">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
