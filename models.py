@@ -213,7 +213,7 @@ class DiscountCode(db.Model):
 class Discount(db.Model):
     __tablename__ = "Discount"
     __table_args__ = (
-        UniqueConstraint("discount_code_id", name="uniq_discount_code_id"),
+        UniqueConstraint("discount_code_id", "customer_id", name="uniq_discount_per_customer"),
         ForeignKeyConstraint(
             ["order_id"], ["Orders.order_id"],
             onupdate="CASCADE", ondelete="SET NULL"

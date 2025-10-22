@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Staff Reports Dashboard</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Sales Reports</h5>
+                    <ul>
+                        <li><a href="{{ url_for('orders.report_top_pizzas') }}">Top Selling Pizzas</a></li>
+                        <li><a href="{{ url_for('orders.report_daily_sales') }}">Daily Sales</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Operational Reports</h5>
+                    <ul>
+                        <li><a href="{{ url_for('orders.report_undelivered_detailed') }}">Undelivered Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Вторая строка -->
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Customer Analytics</h5>
+                    <ul>
+                        <li><a href="{{ url_for('orders.report_earnings_gender') }}">Earnings by Gender</a></li>
+                        <li><a href="{{ url_for('orders.report_earnings_age') }}">Earnings by Age Group</a></li>
+                        <li><a href="{{ url_for('orders.report_earnings_postal') }}">Earnings by Postal Code</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Data Integrity</h5>
+                    <ul>
+                        <li><a href="{{ url_for('orders.report_constraint_tests') }}">Constraint Validation Tests</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

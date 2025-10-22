@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>All Orders</h2>
+
+  <div class="mb-3">
+    <a class="btn btn-primary" href="{{ url_for('orders.new_order') }}">New Order</a>
+    <a class="btn btn-secondary" href="{{ url_for('orders.undelivered_orders') }}">Undelivered Orders</a>
+  </div>
+
+  {% if order_rows %}
+  <table class="table table-striped align-middle">
+    <thead>
+      <tr>
+        <th style="width: 30px;"></th>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Ordered</th>
+        <th>Status</th>
+        <th>Driver</th>
+        <th class="price">Subtotal (€ ex VAT)</th>
+        <th class="price">Discount (€)</th>
+        <th class="price">Total (€ ex VAT)</th>
+        <th class="price">Total (€ inc VAT)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in order_rows %}
+      <tr>
+        <td>
+          <button class="btn btn-sm btn-link p-0" 
+                  type="button" 
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#details-{{ row.order_id }}" 
+                  aria-expanded="false" 
+                  aria-controls="details-{{ row.order_id }}"
+                  onclick="this.querySelector('.arrow').classList.toggle('rotated')">
+            <span class="arrow" style="display: inline-block; transition: transform 0.2s;">▼</span>
+          </button>
+        </td>
+        <td>{{ row.order_id }}</td>
+        <td>{{ row.customer_name or 'Unknown' }}</td>
+        <td>{{ row.order_date }}</td>
+        <td>{{ row.current_status or '—' }}</td>
+        <td>{{ row.driver_name or '—' }}</td>
+        <td class="price">€{{ '%.2f'|format(row.subtotal_ex_vat) }}</td>
+        <td class="price" style="color: green;">-€{{ '%.2f'|format(row.discount_ex_vat) }}</td>
+        <td class="price"><strong>€{{ '%.2f'|format(row.total_ex_vat) }}</strong></td>
+        <td class="price">€{{ '%.2f'|format(row.total_inc_vat) }}</td>
+      </tr>
+      <tr>
+        <td colspan="10" class="p-0" style="border: none;">
+          <div class="collapse" id="details-{{ row.order_id }}">
+            <div class="card card-body m-2" style="background-color: #f8f9fa;">
+              <h5>Order #{{ row.order_id }} Details</h5>
+              {% if row.order_items %}
+              <table class="table table-sm mb-0">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th class="price">Price (€ ex VAT)</th>
+                    <th class="price">Total (€ ex VAT)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in row.order_items %}
+                  <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td class="price">€{{ '%.2f'|format(item.price_excl_vat) }}</td>
+                    <td class="price">€{{ '%.2f'|format(item.price_excl_vat * item.quantity) }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% else %}
+              <p class="mb-0">No items found for this order.</p>
+              {% endif %}
+              
+              {% if row.discount_details %}
+              <hr>
+              <h6>Discounts Applied:</h6>
+              <ul class="mb-0">
+                {% if row.discount_details.birthday_discount > 0 %}
+                <li>Birthday Discount: -€{{ '%.2f'|format(row.discount_details.birthday_discount) }}</li>
+                {% endif %}
+                {% if row.discount_details.loyalty_discount > 0 %}
+                <li>Loyalty Discount ({{ row.discount_details.loyalty_milestones }} milestone{{ 's' if row.discount_details.loyalty_milestones != 1 else '' }}): -€{{ '%.2f'|format(row.discount_details.loyalty_discount) }}</li>
+                {% endif %}
+                {% if row.discount_details.code_discount > 0 %}
+                <li>Discount Code ({{ row.discount_details.code_name }}): -€{{ '%.2f'|format(row.discount_details.code_discount) }}</li>
+                {% endif %}
+              </ul>
+              {% endif %}
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <style>
+    .arrow.rotated {
+      transform: rotate(-90deg);
+    }
+  </style>
+  {% else %}
+    <p>No orders yet.</p>
+  {% endif %}
+{% endblock %}

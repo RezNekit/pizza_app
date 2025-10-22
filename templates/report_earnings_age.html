@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Earnings by Age Group</h2>
+
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-3">
+            <label>Month:</label>
+            <input type="number" name="month" value="{{ month }}" class="form-control" min="1" max="12">
+        </div>
+        <div class="col-md-3">
+            <label>Year:</label>
+            <input type="number" name="year" value="{{ year }}" class="form-control" min="2020" max="2030">
+        </div>
+        <div class="col-md-3">
+            <label>&nbsp;</label>
+            <button type="submit" class="btn btn-primary form-control">Apply</button>
+        </div>
+    </div>
+</form>
+
+{% if earnings %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Age Group</th>
+            <th>Orders</th>
+            <th>Total Revenue</th>
+            <th>Unique Customers</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for earning in earnings %}
+        <tr>
+            <td>{{ earning.age_group }}</td>
+            <td>{{ earning.order_count }}</td>
+            <td>€{{ earning.total_revenue_excl_vat }}</td>
+            <td>{{ earning.unique_customers }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">
+    No earnings data found for the selected criteria.
+</div>
+{% endif %}
+<a href="{{ url_for('orders.reports_dashboard') }}" class="btn btn-secondary">Back to Reports</a>
+{% endblock %}

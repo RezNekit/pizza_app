@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Undelivered Orders Details</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Driver</th>
+            <th>Items</th>
+            <th>Value (ex VAT)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.order_id }}</td>
+            <td>{{ order.order_date }}</td>
+            <td>{{ order.customer_name }}</td>
+            <td>{{ order.current_status }}</td>
+            <td>{{ order.driver_name }}</td>
+            <td>{{ order.total_items }} items</td>
+            <td>€{{ order.order_value_ex_vat }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('orders.reports_dashboard') }}" class="btn btn-secondary">Back to Reports</a>
+
+{% endblock %}

@@ -41,9 +41,10 @@ def create_app():
                 '<a href="/drinks">Drinks</a> · '
                 '<a href="/desserts">Desserts</a> · '
                 '<a href="/customers">Customers</a> · '
-                '<a href="/orders">Orders</a></p>'
-                '<a href="/menu">Pizza Meny (RAW)</a></p>'
-                '<a href="/menu/full">Full Meny (RAW)</a></p>')
+                '<a href="/orders">Orders</a> ·'
+                '<a href="/reports">Reports</a> · '
+                '<a href="/menu">Pizza Menu (RAW)</a> ·'
+                '<a href="/menu/full">Full Menu (RAW)</a>')
 
     @app.get("/menu")
     def menu():
@@ -61,7 +62,7 @@ if __name__ == "__main__":
     with app.app_context():
         rows = simple_method()
         print("Ingredients:", [r["name"] for r in rows])
-    app.run(debug=True)
+    app.run(port = 8000,debug=True)
 
     
         

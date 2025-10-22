@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Undelivered Orders</h2>
+
+  {% if orders %}
+  <table class="table table-striped align-middle">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for o in orders %}
+      <tr>
+        <td>{{ o.order_id }}</td>
+        <td>{{ o.customer_name }}</td>
+        <td>{{ o.order_date }}</td>
+        <td>{{ o.current_status }}</td>
+        <td>
+          <form method="post" action="{{ url_for('orders.set_delivered', order_id=o.order_id) }}">
+            <button class="btn btn-sm btn-success">Mark delivered</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>No undelivered orders 🎉</p>
+  {% endif %}
+{% endblock %}

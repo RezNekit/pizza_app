@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Create New Order</h2>
+
+  <form method="post" action="{{ url_for('orders.create_order') }}" class="row g-4">
+
+    <!-- Customer + Discount code -->
+    <div class="col-12 col-md-6">
+      <label class="form-label">Customer
+        <select class="form-select" name="customer_id" required>
+          <option value="">Choose...</option>
+          {% for c in customers %}
+            <option value="{{ c.customer_id }}">{{ c.first_name }} {{ c.last_name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <label class="form-label">Discount code (optional)
+        <input type="text" name="discount_code" class="form-control" placeholder="e.g. WELCOME10">
+      </label>
+    </div>
+
+    <!-- Pizzas -->
+    <div class="col-12">
+      <h4 class="mt-3">Pizzas (choose quantities)</h4>
+      {% if pizzas %}
+      <table class="table table-sm align-middle">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th class="price">€ ex VAT</th>
+            <th style="width:160px;">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in pizzas %}
+          <tr>
+            <td>{{ p.name }}</td>
+            <td class="price">€{{ '%.2f'|format(p.price_ex_vat or 0) }}</td>
+            <td>
+              <input type="number" name="qty_pizza_{{ p.pizza_id }}" class="form-control"
+                     value="0" min="0" step="1" inputmode="numeric">
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<p>No pizzas available.</p>{% endif %}
+    </div>
+
+    <!-- Drinks -->
+    <div class="col-12">
+      <h4 class="mt-3">Drinks (optional)</h4>
+      {% if drinks %}
+      <table class="table table-sm align-middle">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size (ml)</th>
+            <th class="price">€ ex VAT</th>
+            <th style="width:160px;">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in drinks %}
+          <tr>
+            <td>{{ d.name }}</td>
+            <td>{{ d.size_ml }}</td>
+            <td class="price">€{{ '%.2f'|format(d.price_ex_vat or 0) }}</td>
+            <td>
+              <input type="number" name="qty_drink_{{ d.drink_id }}" class="form-control"
+                     value="0" min="0" step="1" inputmode="numeric">
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<p>No drinks available.</p>{% endif %}
+    </div>
+
+    <!-- Desserts -->
+    <div class="col-12">
+      <h4 class="mt-3">Desserts (optional)</h4>
+      {% if desserts %}
+      <table class="table table-sm align-middle">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th class="price">€ ex VAT</th>
+            <th style="width:160px;">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in desserts %}
+          <tr>
+            <td>{{ d.name }}</td>
+            <td class="price">€{{ '%.2f'|format(d.price_ex_vat or 0) }}</td>
+            <td>
+              <input type="number" name="qty_dessert_{{ d.dessert_id }}" class="form-control"
+                     value="0" min="0" step="1" inputmode="numeric">
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<p>No desserts available.</p>{% endif %}
+    </div>
+
+    <div class="col-12">
+      <button class="btn btn-success" type="submit">Create</button>
+      <a href="{{ url_for('orders.list_orders') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+{% endblock %}

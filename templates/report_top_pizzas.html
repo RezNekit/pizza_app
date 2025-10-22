@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Top Selling Pizzas</h2>
+
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-3">
+            <label>Last N days:</label>
+            <input type="number" name="days" value="{{ days }}" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label>Limit:</label>
+            <input type="number" name="limit" value="{{ limit }}" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label>&nbsp;</label>
+            <button type="submit" class="btn btn-primary form-control">Apply</button>
+        </div>
+    </div>
+</form>
+
+{% if pizzas %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Pizza</th>
+            <th>Total Sold</th>
+            <th>Revenue (ex VAT)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pizza in pizzas %}
+        <tr>
+            <td>{{ pizza.name }}</td>
+            <td>{{ pizza.total_sold }}</td>
+            <td>€{{ pizza.total_revenue_excl_vat }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">
+    No pizza sales data found for the selected criteria.
+</div>
+{% endif %}
+<a href="{{ url_for('orders.reports_dashboard') }}" class="btn btn-secondary">Back to Reports</a>
+
+{% endblock %}

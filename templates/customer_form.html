@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-  <form method="post" action="{{ url_for('customers.create_customer') }}" class="row g-3">
+  <form method="post" action="{{ url_for('customers.create_customer_post') }}" class="row g-3">
     <div class="col-md-6">
       <label class="form-label">First name
         <input class="form-control" type="text" name="first_name" required>
@@ -11,6 +11,7 @@
         <input class="form-control" type="text" name="last_name" required>
       </label>
     </div>
+
     <div class="col-md-6">
       <label class="form-label">Email
         <input class="form-control" type="email" name="email" required>
@@ -21,11 +22,41 @@
         <input class="form-control" type="text" name="phone" required>
       </label>
     </div>
+
     <div class="col-md-3">
       <label class="form-label">Gender (M/F)
         <input class="form-control" type="text" name="gender" maxlength="1">
       </label>
     </div>
+    <div class="col-md-3">
+      <label class="form-label">Birth date (YYYY-MM-DD)
+        <input class="form-control" type="date" name="birth_date" placeholder="YYYY-MM-DD">
+      </label>
+    </div>
+
+    <div class="col-12"><h5 class="mt-3">Address</h5></div>
+
+    <div class="col-md-6">
+      <label class="form-label">Street
+        <input class="form-control" type="text" name="street">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">City
+        <input class="form-control" type="text" name="city">
+      </label>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Postal code
+        <input class="form-control" type="text" name="postal_code">
+      </label>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Country
+        <input class="form-control" type="text" name="country" placeholder="e.g. BE, IT, FI">
+      </label>
+    </div>
+
     <div class="col-12">
       <button class="btn btn-primary" type="submit">Create</button>
       <a class="btn btn-secondary" href="{{ url_for('customers.list_customers') }}">Cancel</a>

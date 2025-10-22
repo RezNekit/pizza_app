@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Data Integrity Tests</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Test Summary</h5>
+        <div class="alert alert-{{ 'success' if results.summary.status == 'PASS' else 'danger' }}">
+            <strong>Status: {{ results.summary.status }}</strong><br>
+            Tests Run: 3<br>
+            Violations Found: {{ results.summary.total_violations }}
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5>Vegetarian Pizza Constraints</h5>
+        <span class="badge bg-{{ 'success' if results.non_vegeterian_ingredients_violations|length == 0 else 'danger' }}">
+            {{ results.non_vegeterian_ingredients_violations|length }} issues
+        </span>
+    </div>
+    <div class="card-body">
+        {% if results.non_vegeterian_ingredients_violations and results.non_vegeterian_ingredients_violations|length > 0 %}
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Pizza ID</th>
+                        <th>Pizza Name</th>
+                        <th>Ingredient</th>
+                        <th>Problem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in results.non_vegeterian_ingredients_violations %}
+                    <tr>
+                        <td>{{ issue.pizza_id or 'N/A' }}</td>
+                        <td>{{ issue.pizza_name or 'N/A' }}</td>
+                        <td>{{ issue.ingredient or 'N/A' }}</td>
+                        <td>{{ issue.problem or 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-success">✓ No violations found - all vegetarian pizzas are properly configured.</p>
+        {% endif %}
+    </div>
+</div>>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5>Negative Ingredient Prices</h5>
+        <span class="badge bg-{{ 'success' if results.negative_ingredient_prices|length == 0 else 'danger' }}">
+            {{ results.negative_ingredient_prices|length }} issues
+        </span>
+    </div>
+    <div class="card-body">
+        {% if results.negative_ingredient_prices and results.negative_ingredient_prices|length > 0 %}
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Ingredient ID</th>
+                        <th>Ingredient Name</th>
+                        <th>Cost</th>
+                        <th>Problem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in results.negative_ingredient_prices %}
+                    {% if issue.ingredient_id %}
+                    <tr>
+                        <td>{{ issue.ingredient_id }}</td>
+                        <td>{{ issue.ingredient_name }}</td>
+                        <td>€{{ issue.ingredient_cost }}</td>
+                        <td>{{ issue.problem }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-success">✓ No negative prices found.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5>Discount Code Reuse</h5>
+        <span class="badge bg-{{ 'success' if results.reused_discount_codes|length == 0 else 'danger' }}">
+            {{ results.reused_discount_codes|length }} issues
+        </span>
+    </div>
+    <div class="card-body">
+        {% if results.reused_discount_codes and results.reused_discount_codes|length > 0 %}
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Discount Code</th>
+                        <th>Customer ID</th>
+                        <th>Usage Count</th>
+                        <th>Problem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in results.reused_discount_codes %}
+                    <tr>
+                        <td>{{ issue.discount_code or 'N/A' }}</td>
+                        <td>{{ issue.customer_id or 'N/A' }}</td>
+                        <td>{{ issue.usage_count or 'N/A' }}</td>
+                        <td>{{ issue.problem or 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-success">✓ No discount code reuse violations.</p>
+        {% endif %}
+    </div>
+</div>
+
+<a href="{{ url_for('orders.reports_dashboard') }}" class="btn btn-secondary">Back to Reports</a>
+
+{% endblock %}
